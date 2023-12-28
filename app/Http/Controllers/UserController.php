@@ -29,7 +29,10 @@ class UserController extends Controller
             'token' => $token
         ];
 
+        // $user->sendEmailVerificationNotification();
+
         return response($response, 201);
+        // return response()->json(['message' => 'Registration successful. Please verify your email.'], 201);
     }
 
 
