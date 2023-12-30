@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function () {
+    return response()->json(['message' => 'Hello World!'], 200);
+});
 // Auth::routes(['verify' => true]);
 
 Route::middleware('auth:sanctum')->group(function () {
