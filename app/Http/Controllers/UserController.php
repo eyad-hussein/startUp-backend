@@ -20,11 +20,16 @@ class UserController extends Controller
 
     public function register(Request $request)
     {   
+        \Log::info($request->all());
         return $this->userService->register($request);
     }
 
     public function login(Request $request)
     {
         return $this->userService->login($request);
+    }
+
+    public function logout() {
+        return $this->userService->logout();
     }
 }

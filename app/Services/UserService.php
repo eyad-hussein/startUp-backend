@@ -16,6 +16,8 @@ class UserService
             'password' => 'required|string|confirmed'
         ]);
 
+        \Log::info($fields);
+        
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
@@ -60,7 +62,7 @@ class UserService
          return response($response, 200);
     }
 
-    public function logout(Request $request) {
+    public function logout() {
         auth()->user()->tokens()->delete();
         return response(['message' => 'Log out successful'], 200);
     }
