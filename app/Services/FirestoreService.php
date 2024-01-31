@@ -5,6 +5,7 @@ namespace App\Services;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Core\Exception\GoogleException;
+use Google\Cloud\Core\ExponentialBackoff;
 
 class FirestoreService
 {
@@ -52,4 +53,33 @@ class FirestoreService
 
         return $videoUrls;
     }
+
+    public function getImageUrlsWithStructure($bucketName)
+    {
+        $bucket = $this->storage->bucket($bucketName);
+
+        $objects = $bucket->objects(['prefix' => 'images/']);
+
+        $imageUrls = [];
+
+        foreach ($objects as $object) {
+            $path = explode('/', $object->name());
+            $imageName = array_pop($path);
+
+            $currentArray = &$imageUrls;
+            foreach ($path as $folder) {
+                if (!isset($currentArray[$folder])) {
+                    $currentArray[$folder] = [];
+                }
+                $currentArray = &$currentArray[$folder];
+            }
+
+            if (substr($imageName, -4) === '.png') {
+                $currentArray[$imageName] = $object->signedUrl(strtotime('+100 years'));
+            }
+        }
+
+        return $imageUrls;
+    }
+
 }
