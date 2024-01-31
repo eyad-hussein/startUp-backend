@@ -5,6 +5,7 @@ namespace App\Services;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Core\Exception\GoogleException;
+use Illuminate\Support\Facades\DB;
 use Google\Cloud\Core\ExponentialBackoff;
 
 class FirestoreService
@@ -79,7 +80,34 @@ class FirestoreService
             }
         }
 
+
         return $imageUrls;
+    }
+
+
+    public function migrateImagesToDatabase($bucketName, $rootFolder)
+    {
+        $bucket = $this->storage->bucket($bucketName);
+
+        $objects = $bucket->objects(['prefix' => $rootFolder]);
+
+        foreach ($objects as $object) {
+            if ($object->name() !== $rootFolder) {
+                $imageUrl = $object->signedUrl(strtotime('+100 years'));
+
+                $this->insertImageToDatabase($imageUrl, $object->name());
+            }
+        }
+    }
+
+    private function insertImageToDatabase($url, $alt)
+    {
+        DB::table('images')->insert([
+            'url' => $url,
+            'alt' => $alt,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
 }
