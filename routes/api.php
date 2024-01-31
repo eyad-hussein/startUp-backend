@@ -3,8 +3,10 @@
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Services\FirestoreService;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,8 @@ Route::get('/test', function () {
     return response()->json(['message' => 'Hello World!'], 200);
 });
 // Auth::routes(['verify' => true]);
+
+Route::get('/test1', [Test::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
