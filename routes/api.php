@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Services\FirestoreService;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +24,8 @@ Route::get('/test', function () {
 });
 // Auth::routes(['verify' => true]);
 
+Route::get('/test1', [Test::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
 });
@@ -27,6 +33,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/images', [ImageController::class, 'index']);
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::middleware('throttle:300,1')->group(function () {
+    Route::get('/products/main', [ProductController::class, 'showMain']);
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
