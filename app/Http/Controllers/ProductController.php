@@ -18,7 +18,7 @@ class ProductController extends Controller
 
     public function showMain()
     {
-        $productsIds = [2, 3, 5, 4];
+        $productsIds = [16, 17, 18, 19];
         $products = Product::with("image")->find($productsIds);
 
         return response([

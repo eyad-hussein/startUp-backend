@@ -37,9 +37,9 @@ Route::post('/login', [UserController::class, 'login']);
 Route::get('/images', [ImageController::class, 'index']);
 
 Route::get('/products', [ProductController::class, 'index']);
-Route::middleware('throttle:300,1')->group(function () {
-    Route::get('/products/main', [ProductController::class, 'showMain']);
-});
+// Route::middleware('throttle:300,1')->group(function () {
+Route::get('/products/main', [ProductController::class, 'showMain']);
+// });
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
