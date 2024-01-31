@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Core\Exception\GoogleException;
@@ -28,6 +29,7 @@ class FirestoreService
     {
         $bucket = $this->storage->bucket($bucketName);
 
+
         $objects = $bucket->objects(['prefix' => 'images/']);
 
         $imageUrls = [];
@@ -37,6 +39,8 @@ class FirestoreService
         }
 
         return $imageUrls;
+
+
     }
 
     public function getVideoUrlsFromStorge($bucketName)
