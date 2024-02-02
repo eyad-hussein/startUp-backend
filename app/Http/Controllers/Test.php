@@ -17,39 +17,10 @@ class Test extends Controller
 
     public function index()
     {
-        $imageUrls = $this->firestoreService->getImageUrlsWithStructure("styleach.appspot.com");
-        ;
+        $res = $this->firestoreService->migrateImageAndSubImagesToDatabase();
 
-        // foreach ($imageUrls as $imageUrl) {
-        //     Image::create(['url' => $imageUrl, 'alt' => 'image']);
-        // }
+        return response(["res" => $res]);
 
-        return response([
-            'images' => $imageUrls,
-        ]);
     }
 }
-
-
-
-// class ImageSeeder extends Seeder
-// {
-//     protected $firestoreService;
-
-//     public function __construct(FirestoreService $firestoreService)
-//     {
-//         $this->firestoreService = $firestoreService;
-//     }
-//     /**
-//      * Run the database seeds.
-//      */
-//     public function run(): void
-//     {
-//         $imageUrls = $this->firestoreService->getImageUrlsFromStorage("styleach.appspot.com");
-
-//         foreach ($imageUrls as $imageUrl) {
-//             Image::create(['url' => $imageUrl, 'alt' => 'image']);
-//         }
-//     }
-// }
 
