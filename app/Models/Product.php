@@ -24,8 +24,6 @@ class Product extends Model
     {
         return $this->hasOne(Image::class);
     }
-
-
     public function subimages()
     {
         return $this->hasMany(Subimage::class);
