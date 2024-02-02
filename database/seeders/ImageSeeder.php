@@ -20,10 +20,6 @@ class ImageSeeder extends Seeder
      */
     public function run(): void
     {
-        $imageUrls = $this->firestoreService->getImageUrlsFromStorage("styleach.appspot.com");
-
-        foreach ($imageUrls as $imageUrl) {
-            Image::create(['url' => $imageUrl, 'alt' => 'image']);
-        }
+        $this->firestoreService->migrateImageAndSubImagesToDatabase();
     }
 }

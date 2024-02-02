@@ -8,16 +8,19 @@ use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Core\Exception\GoogleException;
 use Illuminate\Support\Facades\DB;
 use Google\Cloud\Core\ExponentialBackoff;
+use App\Models\Image;
+use App\Models\Subimage;
 
 class FirestoreService
 {
     protected $firestore;
     protected $storage;
+    protected $bucketName;
 
     public function __construct()
     {
         $this->firestore = new FirestoreClient();
-
+        $this->bucketName = "styleach.appspot.com";
         try {
             $this->storage = new StorageClient(['projectId' => 'styleach']);
         } catch (GoogleException $e) {
@@ -25,9 +28,9 @@ class FirestoreService
         }
     }
 
-    public function getImageUrlsFromStorage($bucketName)
+    public function getImageUrlsFromStorage()
     {
-        $bucket = $this->storage->bucket($bucketName);
+        $bucket = $this->storage->bucket($this->bucketName);
 
 
         $objects = $bucket->objects(['prefix' => 'images/']);
@@ -43,9 +46,9 @@ class FirestoreService
 
     }
 
-    public function getVideoUrlsFromStorge($bucketName)
+    public function getVideoUrlsFromStorge()
     {
-        $bucket = $this->storage->bucket($bucketName);
+        $bucket = $this->storage->bucket($this->bucketName);
 
         $objects = $bucket->objects(['prefix' => 'videos/']);
 
@@ -59,9 +62,9 @@ class FirestoreService
         return $videoUrls;
     }
 
-    public function getImageUrlsWithStructure($bucketName)
+    public function getImageUrlsWithStructure()
     {
-        $bucket = $this->storage->bucket($bucketName);
+        $bucket = $this->storage->bucket($this->bucketName);
 
         $objects = $bucket->objects(['prefix' => 'images/']);
 
@@ -88,30 +91,55 @@ class FirestoreService
         return $imageUrls;
     }
 
-
-    public function migrateImagesToDatabase($bucketName, $rootFolder)
+    public function getImageAndSubImagesFromFirestore()
     {
-        $bucket = $this->storage->bucket($bucketName);
+        $path = [];
+        $bucket = $this->storage->bucket($this->bucketName);
 
-        $objects = $bucket->objects(['prefix' => $rootFolder]);
+        $objects = $bucket->objects(['prefix' => 'images/']);
 
-        foreach ($objects as $object) {
-            if ($object->name() !== $rootFolder) {
-                $imageUrl = $object->signedUrl(strtotime('+100 years'));
+        $arrObjects = iterator_to_array($objects);
+        $result = [];
 
-                $this->insertImageToDatabase($imageUrl, $object->name());
+        foreach ($arrObjects as $object) {
+            $path = explode('/', $object->name());
+
+            if (count($path) === 3 && substr($object->name(), -4) === '.png') {
+                $imageNumber = $path[1];
+
+                if (!isset($result[$imageNumber])) {
+                    $result[$imageNumber] = [
+                        "url" => $object->signedUrl(strtotime('+100 years')),
+                        "subImages" => [],
+                    ];
+                }
+            } elseif (count($path) === 4 && substr($object->name(), -4) === '.png') {
+                $imageNumber = $path[1];
+                $result[$imageNumber]["subImages"][] = $object->signedUrl(strtotime('+100 years'));
+            }
+        }
+
+        return $result;
+    }
+
+    public function migrateImageAndSubImagesToDatabase()
+    {
+        $images = $this->getImageAndSubImagesFromFirestore();
+
+        foreach ($images as $image) {
+            $img = new Image();
+            $img->url = $image["url"];
+            $img->alt = "";
+            $img->save();
+
+            foreach ($image["subImages"] as $subImage) {
+                $subImg = new Subimage();
+                $subImg->url = $subImage;
+                $subImg->image_id = $img->id;
+                $subImg->save();
             }
         }
     }
-
-    private function insertImageToDatabase($url, $alt)
-    {
-        DB::table('images')->insert([
-            'url' => $url,
-            'alt' => $alt,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-    }
-
 }
+
+
