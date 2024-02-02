@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -26,13 +27,15 @@ Route::get('/test', function () {
 
 Route::get('/test1/{product}', [ProductController::class, 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [UserController::class, 'logout']);
+
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
 });
-
-
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/images', [ImageController::class, 'index']);
 
