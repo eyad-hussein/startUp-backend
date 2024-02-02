@@ -19,10 +19,9 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->name,
             'slug' => $this->faker->word,
-            'brand' => $this->faker->word,
             'price' => $this->faker->numberBetween(50, 999),
             'old_price' => $this->faker->numberBetween(50, 999),
-            'image_id' => $this->faker->numberBetween(30, 50),
+            'image_id' => $this->faker->numberBetween(1, 3),
             'description' => $this->faker->paragraph,
             'brand_id' => $this->faker->numberBetween(1, 5),
             'short_description' => $this->faker->sentence,
