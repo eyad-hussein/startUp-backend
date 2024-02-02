@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateBrandRequest;
-use App\Http\Resources\BrandCollection;
-use Illuminate\Http\Request;
+use App\Http\Requests\Brand\StoreBrandRequest;
+use App\Http\Requests\Brand\UpdateBrandRequest;
+use App\Http\Resources\Brand\BrandCollection;
 use App\Models\Brand;
-use App\Models\Product;
-use App\Http\Resources\BrandResource;
+use App\Http\Resources\Brand\BrandResource;
 
 class BrandController extends Controller
 {
