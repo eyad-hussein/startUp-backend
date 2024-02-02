@@ -24,7 +24,7 @@ Route::get('/test', function () {
 });
 // Auth::routes(['verify' => true]);
 
-Route::get('/test1', [Test::class, 'index']);
+Route::get('/test1/{product}', [ProductController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
