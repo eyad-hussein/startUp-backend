@@ -9,7 +9,7 @@ class Subimage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'image_id'];
+    protected $fillable = ['image_id', 'url'];
 
     public function product()
     {

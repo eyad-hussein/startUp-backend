@@ -13,7 +13,7 @@ class Product extends Model
     protected $fillable = [
         "name",
         "slug",
-        "brand",
+        "brand_id",
         "price",
         "old_price",
         "image_id",
@@ -26,5 +26,25 @@ class Product extends Model
     public function subimages()
     {
         return $this->hasMany(Subimage::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class, 'product_size');
+    }
+
+    public function product_sizes()
+    {
+        return $this->hasMany(ProductSize::class, 'product_id');
     }
 }
