@@ -22,9 +22,8 @@ class Product extends Model
     ];
     public function image()
     {
-        return $this->belongsTo(Image::class);
+        return $this->hasOne(Image::class);
     }
-
     public function subimages()
     {
         return $this->hasMany(Subimage::class);
@@ -42,11 +41,6 @@ class Product extends Model
 
     public function sizes()
     {
-        return $this->belongsToMany(Size::class, 'product_size');
-    }
-
-    public function product_sizes()
-    {
-        return $this->hasMany(ProductSize::class, 'product_id');
+        return $this->belongsToMany(Size::class);
     }
 }

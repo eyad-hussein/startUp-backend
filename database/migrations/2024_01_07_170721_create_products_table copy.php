@@ -14,10 +14,12 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('brand');
             $table->integer('price');
             $table->integer('old_price');
+            $table->text('description');
+            $table->text('short_description');
             $table->foreignId('image_id')->constrained();
+            $table->foreignId('brand_id')->constrained();
             $table->timestamps();
         });
     }

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProductSize;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Product;
 use App\Models\Size;
 
 class SizeSeeder extends Seeder
@@ -26,13 +26,9 @@ class SizeSeeder extends Seeder
         $sizesIds = [1, 2, 3, 4, 5];
 
         foreach ($productsIds as $productsId) {
+            $product = Product::find($productsId);
 
-            foreach ($sizesIds as $sizeId) {
-                ProductSize::create([
-                    "product_id" => $productsId,
-                    "size_id" => $sizeId,
-                ]);
-            }
+            $product->sizes()->attach($sizesIds);
         }
     }
 }
