@@ -20,6 +20,14 @@ use App\Services\FirestoreService;
 |
 */
 
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+});
+
 Route::get('/test', function () {
     return response()->json(['message' => 'Hello World!'], 200);
 });
@@ -27,15 +35,6 @@ Route::get('/test', function () {
 
 Route::get('/test1/{product}', [ProductController::class, 'show']);
 
-
-
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('logout', [AuthController::class, 'logout']);
-    Route::get('user', [AuthController::class, 'user']);
-});
 
 Route::get('/images', [ImageController::class, 'index']);
 
