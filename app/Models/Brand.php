@@ -19,22 +19,4 @@ class Brand extends Model
     {
         return $this->hasMany(Product::class);
     }
-
-
-    // -------------------------------
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request, Brand $brand)
-    {
-
-        $brand->products()->create($request->validated());
-
-        return response([
-            "message" => "Product created successfully",
-        ]);
-    }
 }
