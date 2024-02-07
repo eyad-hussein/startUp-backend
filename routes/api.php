@@ -33,15 +33,16 @@ Route::get('/test', function () {
 });
 // Auth::routes(['verify' => true]);
 
-Route::get('/test1/{product}', [ProductController::class, 'show']);
+Route::get('/test/{product}', [ProductController::class, 'show']);
 
 
 Route::get('/images', [ImageController::class, 'index']);
 
 Route::get('/products', [ProductController::class, 'index']);
-// Route::middleware('throttle:300,1')->group(function () {
-Route::get('/products/main', [ProductController::class, 'showMain']);
-// });
+Route::get('/products/{product}', [ProductController::class, 'show']);
+Route::middleware('throttle:1500,1')->group(function () {
+    Route::get('/dummy-products', [ProductController::class, 'dummyProducts']);
+});
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

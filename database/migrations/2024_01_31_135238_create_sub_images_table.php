@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('subimages', function (Blueprint $table) {
+        Schema::create('sub_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('image_id');
             $table->text('url');
@@ -18,7 +18,7 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('subimages');
+        Schema::dropIfExists('sub_images');
     }
 
 };
