@@ -36,7 +36,7 @@ Route::get('/test', function () {
 Route::get('/test/{product}', [ProductController::class, 'show']);
 
 
-Route::get('/images', [ImageController::class, 'index']);
+Route::get('/images', [ImageController::class, 'test']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);

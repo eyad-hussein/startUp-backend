@@ -9,7 +9,7 @@ use Google\Cloud\Core\Exception\GoogleException;
 use Illuminate\Support\Facades\DB;
 use Google\Cloud\Core\ExponentialBackoff;
 use App\Models\Image;
-use App\Models\Subimage;
+use App\Models\SubImage;
 
 class FirestoreService
 {
@@ -133,7 +133,7 @@ class FirestoreService
             $img->save();
 
             foreach ($image["subImages"] as $subImage) {
-                $subImg = new Subimage();
+                $subImg = new SubImage();
                 $subImg->url = $subImage;
                 $subImg->image_id = $img->id;
                 $subImg->save();
