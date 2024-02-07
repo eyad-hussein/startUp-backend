@@ -7,10 +7,19 @@ use App\Http\Requests\Image\UpdateImageRequest;
 use App\Http\Resources\Image\ImageResource;
 use App\Http\Resources\Image\ImageCollection;
 use App\Models\Image;
+use App\Services\FirestoreService;
 
 
 class ImageController extends Controller
 {
+    protected $firestoreService;
+
+    public function __construct(FirestoreService $firestoreService)
+    {
+        $this->firestoreService = $firestoreService;
+    }
+
+
     public function index(): ImageCollection
     {
         return new ImageCollection(Image::all());
@@ -38,4 +47,8 @@ class ImageController extends Controller
         return response()->json(['message' => 'Image deleted successfully']);
     }
 
+    public function test()
+    {
+        return $this->firestoreService->getImageAndSubImagesFromFirestore();
+    }
 }
