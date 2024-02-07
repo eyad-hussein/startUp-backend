@@ -8,9 +8,16 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
 use App\Http\Resources\Product\ProductCollection;
 use App\Models\Product;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,7 +37,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        return new ProductResource($product);
+        return $this->productService->showProduct($product->id);
     }
 
     public function update(UpdateProductRequest $request, Product $product): ProductResource
@@ -47,49 +54,9 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product deleted successfully']);
     }
 
-    public function showMain()
+
+    public function dummyProducts()
     {
-        $productsIds = [1, 2, 3, 4, 5];
-
-        $products = Product::with(['image', 'image.subimages', 'brand', 'product_sizes.size', 'reviews'])->find($productsIds);
-
-        $formattedProducts = $products->map(function ($product) {
-            $availableSizes = $product->product_sizes->pluck('size.size')->toArray();
-            $reviews = $product->reviews->map(function ($review) {
-                return [
-                    "content" => $review->content,
-                    "rating" => $review->rating,
-
-                ];
-            })->toArray();
-
-            return [
-                "id" => $product->id,
-                "name" => $product->name,
-                "price" => $product->price,
-                "old_price" => $product->old_price,
-                "description" => $product->description,
-                "short_description" => $product->short_description,
-                "image" => [
-                    "id" => $product->image->id,
-                    "url" => $product->image->url,
-                    "subimages" => $product->image->subimages->map(function ($subimage) {
-                        return [
-                            $subimage->url,
-                        ];
-                    }),
-                ],
-                "brand" => [
-                    "id" => $product->brand->id,
-                    "name" => $product->brand->name,
-                ],
-                "available_sizes" => $availableSizes,
-                "reviews" => $reviews,
-            ];
-        });
-
-        return response([
-            "products" => $formattedProducts,
-        ]);
+        return $this->productService->dummyProducts();
     }
 }

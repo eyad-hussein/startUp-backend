@@ -22,9 +22,9 @@ class Product extends Model
     ];
     public function image()
     {
-        return $this->hasOne(Image::class);
+        return $this->belongsTo(Image::class);
     }
-    public function subimages()
+    public function subImages()
     {
         return $this->hasMany(Subimage::class);
     }
