@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ImageSearchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Test;
@@ -37,6 +38,8 @@ Route::get('/test/{product}', [ProductController::class, 'show']);
 
 
 Route::get('/images', [ImageController::class, 'test']);
+
+Route::post('/image-search', [ImageSearchController::class,'test']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
