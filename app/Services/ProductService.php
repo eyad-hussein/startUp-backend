@@ -8,6 +8,7 @@ use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductService
 {
@@ -31,6 +32,17 @@ class ProductService
 
         // return response()->json(['products' => $products, 'accuracies' => $accuracies]);
     }
+
+    public static function getProductsFromUrl(array $urls)
+    {
+        $products = Product::whereHas('image', function ($query) use ($urls) {
+            $query->whereIn('url', $urls);
+        })->get()->load('brand', 'image', 'sizes', 'reviews', 'image.subImages', 'reviews.user');
+
+        return $products;
+    }
+
+
 
     public function dummyProducts()
     {

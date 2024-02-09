@@ -39,7 +39,7 @@ Route::get('/test/{product}', [ProductController::class, 'show']);
 
 Route::get('/images', [ImageController::class, 'test']);
 
-Route::post('/image-search', [ImageSearchController::class,'test']);
+Route::post('/image-search', [ImageSearchController::class, 'requestSimilarProducts']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
