@@ -22,6 +22,7 @@ class ProductService
         return new ProductResource($product);
     }
 
+    // find a more effecient way to retrieve products
     public function retrieveProducts(array $result)
     {
         $productsWithAccuracies = [
