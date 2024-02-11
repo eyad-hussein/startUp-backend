@@ -26,22 +26,6 @@ class ImageSearchService
     {
         $this->setImage($image);
         $result = $this->fastApiService->retrieveSimilarImagesWithAccuracties($this->image);
-        return $this->retrieveProducts($result);
-    }
-
-    public function retrieveProducts(array $result)
-    {
-        $productsWithAccuracies = [
-            "products" => [],
-            "accuracies" => [],
-        ];
-
-        foreach ($result['images'] as $image) {
-            $product = $this->productService->getProductFromUrl($image['url']);
-            array_push($productsWithAccuracies['products'], $product);
-            array_push($productsWithAccuracies['accuracies'], $image['accuracy']);
-        }
-
-        return $productsWithAccuracies;
+        return $this->productService->retrieveProducts($result);
     }
 }
