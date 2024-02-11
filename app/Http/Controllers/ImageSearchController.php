@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProductService;
+use App\Http\Resources\Product\ProductCollection;
 use App\Services\Search\ImageSearchService;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class ImageSearchController
 {
-
-
     protected $imageSearchService;
 
     public function __construct(ImageSearchService $imageSearchService)
@@ -21,16 +17,7 @@ class ImageSearchController
 
     public function requestSimilarProducts(Request $request)
     {
-        $image = $request->file('image');
-
-        $this->imageSearchService->setImage($image);
-
-        $url = $this->imageSearchService->requestUrlSimilarImages();
-
-        $productsArray = ProductService::getProductsFromUrl($url);
-
-        $productsJson = json_encode($productsArray);
-
-        return response()->json(['products' => $productsJson]);
+        $products = $this->imageSearchService->requestSimilarProducts($request->file('image'));
+        return new ProductCollection($products);
     }
 }

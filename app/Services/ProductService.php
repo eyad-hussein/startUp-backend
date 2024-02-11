@@ -33,13 +33,13 @@ class ProductService
         // return response()->json(['products' => $products, 'accuracies' => $accuracies]);
     }
 
-    public static function getProductsFromUrl(array $urls)
+    public static function getProductFromUrl(string $url)
     {
-        $products = Product::whereHas('image', function ($query) use ($urls) {
-            $query->whereIn('url', $urls);
-        })->get()->load('brand', 'image', 'sizes', 'reviews', 'image.subImages', 'reviews.user');
+        $product = Product::whereHas('image', function ($query) use ($url) {
+            $query->where('url', $url);
+        })->first()->load('brand', 'image', 'sizes', 'reviews', 'image.subImages', 'reviews.user');
 
-        return $products;
+        return $product;
     }
 
 
