@@ -22,15 +22,20 @@ class ProductService
         return new ProductResource($product);
     }
 
-    public function retrieveSearchResults(array $searchResults)
+    public function retrieveProducts(array $result)
     {
-        $productsIds = $searchResults['products'];
-        $accuracies = $searchResults['accuracies'];
+        $productsWithAccuracies = [
+            "products" => [],
+            "accuracies" => [],
+        ];
 
-        // query the database to retrieve the products according to ids
+        foreach ($result['images'] as $image) {
+            $product = $this->getProductFromUrl($image['url']);
+            array_push($productsWithAccuracies['products'], $product);
+            array_push($productsWithAccuracies['accuracies'], $image['accuracy']);
+        }
 
-
-        // return response()->json(['products' => $products, 'accuracies' => $accuracies]);
+        return $productsWithAccuracies;
     }
 
     public static function getProductFromUrl(string $url)
