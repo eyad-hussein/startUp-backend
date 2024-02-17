@@ -10,11 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
-            $table->id();
+        Schema::create('vector_representations', function (Blueprint $table) {
+            $table->foreignId('product_id')->constrained()->primary();
+            $table->json('vector');
             $table->timestamps();
-            $table->string('name');
-            $table->string('address');
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('vector_representations');
     }
 };
