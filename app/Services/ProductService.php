@@ -30,7 +30,7 @@ class ProductService
             "accuracies" => [],
         ];
 
-        foreach ($result['images'] as $image) {
+        foreach ($result as $image) {
             $product = $this->getProductFromUrl($image['url']);
             array_push($productsWithAccuracies['products'], $product);
             array_push($productsWithAccuracies['accuracies'], $image['accuracy']);
