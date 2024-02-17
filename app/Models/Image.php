@@ -21,9 +21,4 @@ class Image extends Model
     {
         return $this->hasOne(Brand::class);
     }
-
-    public function subImages(): HasMany
-    {
-        return $this->hasMany(SubImage::class);
-    }
 }

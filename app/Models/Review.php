@@ -4,20 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'user_id', 'content', 'rating'];
+    protected $fillable = ['product_id', 'buyer_id', 'content', 'rating'];
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function user()
+    public function buyer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Buyer::class);
     }
 }
