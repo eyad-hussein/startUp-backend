@@ -28,7 +28,7 @@ class AuthService
         return response([
             'user' => new UserResource($user),
             'token' => $token,
-        ]);
+        ], 201);
         // return response()->json(['message' => 'Registration successful. Please verify your email.'], 201);
     }
 
@@ -67,5 +67,13 @@ class AuthService
         ]);
 
         return response(['message' => 'Password changed successfully']);
+    }
+
+    public function validateToken(string $token)
+    {
+        if (Auth::user() && Auth::user()->tokens()->find($token))
+            return response(['valid' => true]);
+        else
+            return response(['valid' => false]);
     }
 }

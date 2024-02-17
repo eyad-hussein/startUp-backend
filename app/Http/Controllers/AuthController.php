@@ -31,9 +31,13 @@ class AuthController extends Controller
         return $this->authService->logout();
     }
 
-
     public function changePassword(Request $request)
     {
         return $this->authService->changePassword($request);
+    }
+
+    public function validateToken(Request $request)
+    {
+        return $this->authService->validateToken($request->token);
     }
 }
