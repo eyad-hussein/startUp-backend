@@ -18,6 +18,10 @@ class ImageSearchController
     public function requestSimilarProducts(Request $request)
     {
         $productsWithAccuracies = $this->imageSearchService->requestSimilarProducts($request->image);
-        return response()->json($productsWithAccuracies);
+        return response(
+            [
+                'products' => $productsWithAccuracies,
+            ]
+        );
     }
 }
