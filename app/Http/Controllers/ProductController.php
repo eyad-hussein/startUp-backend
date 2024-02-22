@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use Illuminate\Http\Request;
 use App\Http\Resources\Product\ProductResource;
 use App\Http\Resources\Product\ProductCollection;
 use App\Models\Product;
 use App\Services\ProductService;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -29,10 +31,13 @@ class ProductController extends Controller
         return new ProductCollection(Product::all());
     }
 
-    public function store(StoreProductRequest $request): ProductResource
+    public function store(Request $request)
     {
-        $product = Product::create($request->validated());
-        return new ProductResource($product);
+        $this->productService->storeProduct($request->all());
+
+        return response(
+            ["message" => "Product created successfully",]
+        );
     }
 
     public function show(Product $product)
@@ -52,11 +57,5 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['message' => 'Product deleted successfully']);
-    }
-
-
-    public function dummyProducts()
-    {
-        return $this->productService->dummyProducts();
     }
 }
