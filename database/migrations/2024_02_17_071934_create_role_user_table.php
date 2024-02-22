@@ -8,13 +8,12 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_size', function (Blueprint $table) {
-            $table->foreignId('size_id')->constrained();
-            $table->foreignId('product_id')->constrained();
-            $table->integer('stock');
-            $table->primary(['size_id', 'product_id']);
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->foreignId('role_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->primary(['role_id', 'user_id']);
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_size');
+        Schema::dropIfExists('role_user');
     }
 };

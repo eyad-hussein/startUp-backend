@@ -7,22 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Brand extends Model
+class Buyer extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'image_id'
+        'user_id',
     ];
 
-
-    public function image(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(User::class);
     }
-    public function products(): HasMany
+
+    public function reviews(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Review::class);
     }
 }

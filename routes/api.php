@@ -1,14 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ImageSearchController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Services\FirestoreService;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +18,9 @@ use App\Services\FirestoreService;
 |
 */
 
+Route::get('/test', function () {
+    return response()->json(['message' => 'Hello World!'], 200);
+});
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
@@ -28,28 +28,23 @@ Route::post('register', [AuthController::class, 'register']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('logout', [AuthController::class, 'logout']);
 });
-
-Route::get('/test', function () {
-    return response()->json(['message' => 'Hello World!'], 200);
-});
 // Auth::routes(['verify' => true]);
-
-Route::get('/test/{product}', [ProductController::class, 'show']);
-
-
-Route::get('/images', [ImageController::class, 'test']);
-
-Route::post('/image-search', [ImageSearchController::class, 'requestSimilarProducts']);
-
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{product}', [ProductController::class, 'show']);
-Route::middleware('throttle:1500,1')->group(function () {
-    Route::get('/dummy-products', [ProductController::class, 'dummyProducts']);
-});
-
 
 Route::post('/validate-token', [AuthController::class, 'validateToken']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('/image-search', [ImageSearchController::class, 'requestSimilarProducts']);
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{product}', [ProductController::class, 'show']);
+Route::post('/products/store', [ProductController::class, 'store']);
+Route::middleware('throttle:1500,1')->group(function () {
+    Route::get('/dummy-products', [ProductController::class, 'dummyProducts']);
+});
+
+
+Route::get('/meta-data-test', [Test::class, 'testStorage']);

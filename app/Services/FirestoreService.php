@@ -122,24 +122,24 @@ class FirestoreService
         return $result;
     }
 
-    public function migrateImageAndSubImagesToDatabase()
-    {
-        $images = $this->getImageAndSubImagesFromFirestore();
+    // public function migrateImageAndSubImagesToDatabase()
+    // {
+    //     $images = $this->getImageAndSubImagesFromFirestore();
 
-        foreach ($images as $image) {
-            $img = new Image();
-            $img->url = $image["url"];
-            $img->alt = "";
-            $img->save();
+    //     foreach ($images as $image) {
+    //         $img = new Image();
+    //         $img->url = $image["url"];
+    //         $img->alt = "";
+    //         $img->save();
 
-            foreach ($image["subImages"] as $subImage) {
-                $subImg = new SubImage();
-                $subImg->url = $subImage;
-                $subImg->image_id = $img->id;
-                $subImg->save();
-            }
-        }
-    }
+    //         foreach ($image["subImages"] as $subImage) {
+    //             $subImg = new SubImage();
+    //             $subImg->url = $subImage;
+    //             $subImg->image_id = $img->id;
+    //             $subImg->save();
+    //         }
+    //     }
+    // }
 }
 
 
