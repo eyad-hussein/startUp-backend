@@ -2,30 +2,37 @@
 
 namespace App\Services\Search;
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use App\Services\Search\FastApiService;
 use App\Services\ProductService;
+use App\Services\S3StorageService;
 
 class ImageSearchService
 {
     protected $fastApiService;
     protected $productService;
+    protected $s3StorageService;
     protected $image;
-    public function __construct(FastApiService $fastApiService, ProductService $productService)
+    public function __construct(FastApiService $fastApiService, ProductService $productService, S3StorageService $s3StorageService)
     {
         $this->fastApiService = $fastApiService;
         $this->productService = $productService;
+        $this->$s3StorageService = $s3StorageService;
     }
-    public function setImage(object $image)
+    public function setImage(UploadedFile $image)
     {
         $this->image = $image;
     }
 
     // what is the type of $image?
-    public function requestSimilarProducts(object $image)
+    public function requestSimilarProducts(UploadedFile $image)
     {
         $this->setImage($image);
-        $result = $this->fastApiService->retrieveSimilarImagesWithAccuracties($this->image);
-        return $this->productService->retrieveProducts($result);
+        $category = $this->fastApiService->requestCategoryOfProduct($this->image);
+
+        $vectorRepresentationsOfCategoryWithProductIds = $this->productService->retrieveVectorRepresentationsOfCategory($category);
+        $similarProducts = $this->fastApiService->requestSimilarProducts($vectorRepresentationsOfCategoryWithProductIds);
+        $productsWithAccuracies = $this->s3StorageService->retrieveProductsWithAccuracies($similarProducts);
     }
 }
+

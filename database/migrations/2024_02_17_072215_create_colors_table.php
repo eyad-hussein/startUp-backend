@@ -8,13 +8,11 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('product_size', function (Blueprint $table) {
-            $table->foreignId('size_id')->constrained();
-            $table->foreignId('product_id')->constrained();
-            $table->integer('stock');
-            $table->primary(['size_id', 'product_id']);
+        Schema::create('colors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -24,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_size');
+        Schema::dropIfExists('colors');
     }
 };

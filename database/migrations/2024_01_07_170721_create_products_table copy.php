@@ -12,15 +12,14 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('brand_id')->constrained();
+            $table->foreignId('category_id')->constrained();
             $table->string('name');
             $table->integer('price');
             $table->text('description');
             $table->boolean('is_active')->default(true);
             $table->integer('stock');
             $table->string('meta_data_url');
-            $table->foreignId('image_id')->constrained();
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
     }
