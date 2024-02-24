@@ -2,6 +2,7 @@
 
 namespace App\Services\Search;
 
+use http\Env\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
@@ -45,4 +46,14 @@ class FastApiService
 
         return $response->json();
     }
+
+    public function getSimilarImagesFromText(string $description): array
+    {
+        $response = Http::post($this->fastApiUrl.'/request-images-from-text',[
+           'text' => $description
+        ]);
+
+        return $response->json();
+    }
+
 }
