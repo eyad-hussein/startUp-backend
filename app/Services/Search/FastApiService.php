@@ -47,7 +47,7 @@ class FastApiService
         return $response->json();
     }
 
-    public function getSimilarImagesFromText(string $description): array
+    public function requestSimilarImagesFromText(string $description): array
     {
         $response = Http::post($this->fastApiUrl.'/request-images-from-text',[
            'text' => $description
