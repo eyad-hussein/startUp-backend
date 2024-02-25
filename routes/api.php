@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageSearchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Test;
+use App\Http\Controllers\TextSearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('/image-search', [ImageSearchController::class, 'requestSimilarProducts']);
+Route::post('/text-search', [TextSearchController::class, 'requestImagesFromText']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
