@@ -12,6 +12,6 @@ class TextSearchService
     }
     public function requestImagesFromText(string $text): array
     {
-        return $this->fastApiService->getSimilarImagesFromText($text);
+        return $this->fastApiService->requestSimilarImagesFromText($text);
     }
 }
