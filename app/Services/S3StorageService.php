@@ -64,4 +64,11 @@ class S3StorageService
 
         return json_decode($jsonfile, true);
     }
+
+    public function storeTempImage(UploadedFile $uploadedFile, string $extension){
+        $randomName = uniqid() . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+        return $this->storeImage($uploadedFile,'/temp',$randomName);
+    }
+
+
 }

@@ -5,23 +5,19 @@ namespace App\Http\Controllers;
 use App\Services\Search\TextSearchService;
 use Illuminate\Http\Request;
 
-
 class TextSearchController
 {
     protected $textSearchService;
-
     public function __construct(TextSearchService $textSearchService)
     {
         $this->textSearchService = $textSearchService;
     }
 
-    public function requestImagesFromText(Request $request)
+    public function requestSimilarImages(Request $request)
     {
-        $imagesCorrespondingToText = $this->textSearchService->requestImagesFromText($request['text']);
-        return response(
-            [
-                'images' => $imagesCorrespondingToText,
-            ]
-        );
+        $description = $request['text'];
+        return response(["urls"=>$this->textSearchService->requestSimilarImages($description)],200);
     }
+
+
 }
