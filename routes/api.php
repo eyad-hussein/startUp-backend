@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('/image-search', [ImageSearchController::class, 'requestSimilarProducts']);
-Route::post('/text-search', [TextSearchController::class, 'requestImagesFromText']);
+Route::post('/text-search', [TextSearchController::class, 'requestSimilarImages']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
