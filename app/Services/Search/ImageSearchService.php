@@ -2,6 +2,7 @@
 
 namespace App\Services\Search;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Services\Search\FastApiService;
 use App\Services\ProductService;
@@ -33,6 +34,15 @@ class ImageSearchService
         $vectorRepresentationsOfCategoryWithProductIds = $this->productService->retrieveVectorRepresentationsOfCategory($category);
         $similarProducts = $this->fastApiService->requestSimilarProducts($vectorRepresentationsOfCategoryWithProductIds);
         $productsWithAccuracies = $this->s3StorageService->retrieveProductsWithAccuracies($similarProducts);
+        return $productsWithAccuracies;
     }
+
+    public function requestSimilarProductsFromUrl(string $url){
+        $image = $this->s3StorageService->getImage($url);
+        $this->s3StorageService->emptyFolder('/temp');
+        $productsWithAccuracies = $this->requestSimilarProducts($image);
+        return $productsWithAccuracies;
+    }
+
 }
 
