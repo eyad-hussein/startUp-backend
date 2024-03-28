@@ -24,4 +24,14 @@ class ImageSearchController
             ]
         );
     }
+
+    public function requestSimilarProductsFromUrl(Request $request)
+    {
+        $productsWithAccuracies = $this->imageSearchService->requestSimilarProductsFromUrl($request['url']);
+        return response(
+            [
+                'products' => $productsWithAccuracies,
+            ]
+        );
+    }
 }
