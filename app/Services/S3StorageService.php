@@ -84,5 +84,25 @@ class S3StorageService
         return $url;
     }
 
+    public function getImage(string $url){
+        $imageFileData = Storage::disk('s3')->get($url);
+        return new UploadedFile(
+            $imageFileData,
+            basename($url),
+            mime_content_type($url),
+            null,
+            true
+        );
+    }
+
+    public function emptyFolder(string $folderPath): void
+    {
+        // Get a list of all files in the folder
+        $files = Storage::disk('s3')->files($folderPath);
+        foreach ($files as $file) {
+            Storage::disk('s3')->delete($file);
+        }
+    }
+
 
 }
