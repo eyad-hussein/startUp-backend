@@ -65,9 +65,23 @@ class S3StorageService
         return json_decode($jsonfile, true);
     }
 
-    public function storeTempImage(UploadedFile $uploadedFile, string $extension){
+    public function storeTempImages(array $codedImages)
+    {
+        $urls = [];
+
+        foreach ($codedImages as $image) {
+            $urls[] = $this->storeTempImage(base64_decode($image), 'temp');
+        }
+
+        return $urls;
+    }
+
+    public function storeTempImage(string $binaryData, string $path, string $extension = 'png')
+    {
         $randomName = uniqid() . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
-        return $this->storeImage($uploadedFile,'/temp',$randomName);
+        $url = Storage::disk('s3')->put($path . '/' . $randomName, $binaryData);
+
+        return $url;
     }
 
 
